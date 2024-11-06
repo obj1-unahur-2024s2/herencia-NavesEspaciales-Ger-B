@@ -1,0 +1,42 @@
+import naves.*
+
+describe "Test del modelo basico" {
+  test "xWing puede acelerar y cambiar su trayectoria" {
+    const xWing = new Nave(velocidad = 500, dirRespectoAlSol = 0)
+    xWing.acelerar(20000)
+    xWing.escaparDelSol()
+    assert.equals(20500, xWing.velocidad())
+    assert.equals(-10, xWing.dirRespectoAlSol())
+  }
+  test "xWing puede acercarse y alejarse del sol" {
+    const xWing = new Nave(velocidad = 500, dirRespectoAlSol = 0)
+    xWing.acercarseUnPocoAlSol()
+    xWing.acercarseUnPocoAlSol()
+    xWing.alejarseUnPocoDelSol()
+    assert.equals(1, xWing.dirRespectoAlSol())
+  }
+}
+describe "Test modelos de naves" {
+  test "Nave Baliza prepara el viaje y cambia el color de la baliza" {
+    const naveBaliza = new NaveBaliza(velocidad = 10500, dirRespectoAlSol = -10, baliza = 'rojo')
+    naveBaliza.prepararViaje()
+    assert.equals('verde', naveBaliza.baliza())
+    assert.equals(0, naveBaliza.dirRespectoAlSol())
+  }
+  test "Nave Pasajeros prepara el viaje" {
+    const navePasajeros = new NavePasajero(velocidad = 10500, dirRespectoAlSol = 0, nroPasajeros = 40)
+    navePasajeros.prepararViaje()
+    assert.equals(160, navePasajeros.bebida())
+    assert.equals(240, navePasajeros.comida())
+    assert.equals(1, navePasajeros.dirRespectoAlSol())
+  }
+  test "Nave Combate prepara el viaje" {
+    const naveCombate = new NaveCombate(velocidad = 10500, dirRespectoAlSol = -5, visible = false)
+    naveCombate.prepararViaje()
+    assert.equals(25500, naveCombate.velocidad())
+    assert.that(naveCombate.estaVisible())
+    assert.notThat(naveCombate.misilesDesplegados())
+    assert.notThat(naveCombate.mensajesEmitidos().isEmpty())
+    assert.that(naveCombate.esEscueta())
+  }
+}
